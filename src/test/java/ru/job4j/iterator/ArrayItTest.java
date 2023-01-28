@@ -1,12 +1,11 @@
-package ru.job4j;
+package ru.job4j.iterator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.iterator.ArrayIt;
+
 import static org.assertj.core.api.Assertions.*;
 
-/**
- * Unit test for simple App.
- */
 class ArrayItTest {
     @Test
     void whenMultiCallHasNextThenTrue() {
