@@ -1,1 +1,1 @@
-Проект job4j_design.
+Project job4j_design.
