@@ -25,7 +25,7 @@ public class NameLoadTest {
         NameLoad nameLoad = new NameLoad();
         String word1 = "=1";
         String word2 = "item=2";
-        assertThatThrownBy(() -> nameLoad.parse(word1,word2))
+        assertThatThrownBy(() -> nameLoad.parse(word1, word2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^.+")
                 .hasMessageContaining("does not contain a key")
