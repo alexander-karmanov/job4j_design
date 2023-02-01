@@ -1,6 +1,5 @@
 package ru.job4j.iterator;
 
-
 import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import java.util.NoSuchElementException;
@@ -49,6 +48,4 @@ public class BackwardArrayItTest {
         assertThatThrownBy(it::next)
                 .isInstanceOf(NoSuchElementException.class);
     }
-
-
 }
