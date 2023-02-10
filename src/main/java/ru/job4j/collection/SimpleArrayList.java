@@ -31,7 +31,7 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
         T tmp = container[index];
         checkRange(index);
         container[index]  = newValue;
-        return tmp; //container[index];
+        return tmp;
     }
 
     @Override
