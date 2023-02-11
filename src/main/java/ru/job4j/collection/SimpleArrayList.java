@@ -16,9 +16,6 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
 
     @Override
     public void add(T value) {
-        if (size == 0) {
-            container = Arrays.copyOf(container, container.length + 1);
-        }
         if (size >= container.length) {
             expandArray();
         }
@@ -28,15 +25,15 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
+        Objects.checkIndex(index, size);
         T tmp = container[index];
-        checkRange(index);
         container[index]  = newValue;
         return tmp;
     }
 
     @Override
     public T remove(int index) {
-        checkRange(index);
+        Objects.checkIndex(index, size);
         T tmp = container[index];
         System.arraycopy(container, index  + 1, container, index, container.length - index - 1);
         container[size - 1] = null;
@@ -47,7 +44,7 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
 
     @Override
     public T get(int index) {
-            checkRange(index);
+        Objects.checkIndex(index, size);
         return container[index];
     }
 
@@ -66,7 +63,7 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return index < container.length;
+                return index < size;
             }
 
             @Override
@@ -79,12 +76,10 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
         };
     }
 
-    private void checkRange(int index) {
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException("Array is out of bounds");
-        }
-    }
     public void expandArray() {
+        if (size == 0) {
+            container = Arrays.copyOf(container, container.length + 1);
+        }
         container = Arrays.copyOf(container, container.length * 2);
     }
 }

@@ -46,7 +46,6 @@ public class SimpleArrayListTest {
         assertThat(list.get(1)).isEqualTo(3);
     }
 
-
     @Test
     void whenAddAndGetByCorrectIndex() {
         list.add(4);
