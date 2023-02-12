@@ -2,13 +2,12 @@ package ru.job4j.collection;
 
 import java.util.*;
 
-public class SimpleArrayList<T>  implements SimpleList<T> {
+public class SimpleArrayList<T> implements SimpleList<T> {
     private T[] container;
 
     private int size;
 
     private int modCount;
-    private int index = 0;
 
     public SimpleArrayList(int capacity) {
         this.container = (T[]) new Object[capacity];
@@ -27,7 +26,7 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
     public T set(int index, T newValue) {
         Objects.checkIndex(index, size);
         T tmp = container[index];
-        container[index]  = newValue;
+        container[index] = newValue;
         return tmp;
     }
 
@@ -57,6 +56,7 @@ public class SimpleArrayList<T>  implements SimpleList<T> {
     public Iterator<T> iterator() {
         return new Iterator<T>() {
             final int expectedModCount = modCount;
+            private int index = 0;
 
             @Override
             public boolean hasNext() {
