@@ -74,7 +74,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         };
     }
 
-    public void expandArray() {
+    private void expandArray() {
         if (size == 0) {
             container = Arrays.copyOf(container, container.length + 1);
         }
