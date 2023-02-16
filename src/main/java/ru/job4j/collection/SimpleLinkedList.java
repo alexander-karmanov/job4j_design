@@ -11,8 +11,8 @@ public class SimpleLinkedList<E> implements LinkedList<E>  {
 
     @Override
     public void add(E value) {
-        final Node<E> l = tail;
-        final Node<E> newNode = new Node<>(value, head);
+        Node<E> l = tail;
+        Node<E> newNode = new Node<>(value, head);
         tail = newNode;
             if (l == null) {
                 head = newNode;
@@ -44,7 +44,7 @@ public class SimpleLinkedList<E> implements LinkedList<E>  {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return index < size;
+                return head.next != null;
             }
 
             @Override
@@ -54,7 +54,7 @@ public class SimpleLinkedList<E> implements LinkedList<E>  {
                 }
                 E current = head.item;
                 head = head.next;
-                index++;
+                next();
                 return current;
             }
         };
