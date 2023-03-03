@@ -60,8 +60,7 @@ public class ListUtilsTest {
     void whenReplaceAll() {
         ListUtils.addAfter(input, 0, 2);
         List<Integer> elements = new ArrayList<>(Arrays.asList(1, 3, 5, 7));
-        Predicate<Integer> pred = s -> input.contains(2);
-        ListUtils.removeAll(input, elements, pred);
+        ListUtils.removeAll(input, elements);
         assertThat(input).hasSize(1).containsSequence(2);
     }
 }

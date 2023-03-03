@@ -34,9 +34,8 @@ public class ListUtils {
         }
     }
 
-    public static <T> void removeAll(List<T> list, List<T> elements, Predicate<T> predicate) {
-            for (int i = 0; i < elements.size(); i++) {
-            list.removeIf(predicate);
-            }
+    public static <T> void removeAll(List<T> list, List<T> elements) {
+        Predicate<T> predicate = elements::contains;
+        removeIf(list, predicate);
     }
 }
