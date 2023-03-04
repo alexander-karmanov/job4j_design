@@ -25,6 +25,9 @@ public class SimpleSet<T> implements Set<T> {
                 rsl = true;
             }
             rsl = Objects.equals(el, value);
+            if (rsl) {
+                break;
+            }
         }
         return rsl;
     }
