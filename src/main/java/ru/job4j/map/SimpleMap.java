@@ -95,6 +95,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
+                if (table[index] == null) {
+                    table[index] = new MapEntry<>(table[index].key, table[index].value);
+                }
                 return table[index++].key;
             }
         };
