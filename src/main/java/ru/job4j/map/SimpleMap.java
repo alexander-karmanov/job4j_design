@@ -87,6 +87,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
+                while (index < count && table[index] == null && table[index] != null) {
+                    index++;
+                }
                 return index < count;
             }
 
@@ -94,9 +97,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
             public K next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                if (table[index] == null) {
-                    table[index] = new MapEntry<>(table[index].key, table[index].value);
                 }
                 return table[index++].key;
             }
