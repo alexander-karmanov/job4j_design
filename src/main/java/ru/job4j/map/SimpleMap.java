@@ -51,9 +51,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
         MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
         for (int index = 0; index < table.length; index++) {
             MapEntry<K, V> entry = table[index];
-            if (indexFor(hash(table[index].key.hashCode())) > capacity * LOAD_FACTOR
-                && count == (capacity * LOAD_FACTOR)) {
-                newTable[indexFor(entry.key.hashCode())] = entry;
+            if (indexFor(hash(table[index].key.hashCode())) > capacity * LOAD_FACTOR) {
+                int indexNew = indexFor(hash(newTable.hashCode()));
+                newTable[indexNew] = entry;
                 table[index] = null;
                 modCount++;
             }
