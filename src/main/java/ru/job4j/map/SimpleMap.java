@@ -40,24 +40,23 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int hash(int hashCode) {
-        return hashCode ^ (hashCode >>> capacity);
+        return 16;
     }
 
     private int indexFor(int hash) {
-        return hash & (table.length - 1);
+        return hash & (capacity - 1);
     }
 
     private void expand() {
-        MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
-        for (int index = 0; index < table.length; index++) {
-            MapEntry<K, V> entry = table[index];
-            if (indexFor(hash(table[index].key.hashCode())) > capacity * LOAD_FACTOR) {
-                int indexNew = indexFor(hash(newTable.hashCode()));
-                newTable[indexNew] = entry;
-                table[index] = null;
-                modCount++;
+        capacity *= 2;
+        MapEntry<K, V>[] newTable = new MapEntry[capacity];
+        for (MapEntry<K, V> entry : table) {
+            if (entry != null) {
+                newTable[indexCalc(entry.key)] = entry;
             }
         }
+        table = newTable;
+        modCount++;
     }
 
     @Override
