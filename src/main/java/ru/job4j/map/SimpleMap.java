@@ -62,7 +62,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         int indexFound = indexCalc(key);
         MapEntry<K, V> entry = table[indexFound];
         if (entry != null
-                && Objects.hashCode(entry) == Objects.hashCode(key)
+                && Objects.hashCode(entry.key) == Objects.hashCode(key)
                 && Objects.equals(entry.key, key)) {
                 result = entry.value;
         }
