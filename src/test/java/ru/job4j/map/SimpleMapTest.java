@@ -1,12 +1,12 @@
-package map;
+package ru.job4j.map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.job4j.map.SimpleMap;
 import java.util.*;
 import static org.assertj.core.api.Assertions.*;
 
-public class SimpleMapTest {
+class SimpleMapTest {
+
     private final SimpleMap<Integer, String> map = new SimpleMap<>();
 
     @BeforeEach
@@ -121,6 +121,7 @@ public class SimpleMapTest {
         assertThat(map.remove(null)).isTrue();
         assertThat(map).hasSize(4);
     }
+
 
     @Test
     void whenCheckPutZeroAndNull() {
