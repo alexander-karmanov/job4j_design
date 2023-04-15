@@ -55,7 +55,7 @@ public class FindNumbers {
         int[] data = {0, 2, 3, 5, 7, 2, 7, 5, 0, 8, 3};
         FindNumbers fn = new FindNumbers();
         fn.calcSumQuadratic(number, data);
-        fn.calcSumLogarithmic(number, data);
         fn.calcSumLinear(number, data);
+        fn.calcSumLogarithmic(number, data);
     }
 }
