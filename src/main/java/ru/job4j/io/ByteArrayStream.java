@@ -4,9 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class ByteArrayStream {
     public static void main(String[] args) {
@@ -23,7 +20,6 @@ public class ByteArrayStream {
         while ((data1 = byteStream2.read()) != -1) {
             System.out.print((char) data1);
         }
-
         System.out.println();
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] bytes2 = "Message".getBytes();
@@ -34,13 +30,6 @@ public class ByteArrayStream {
             outStream.writeTo(fileOutput);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        //
-        Set<String> strings = new TreeSet<>(Set.of("one", "two", "three", "four", "five"));
-        Iterator<String> iterator = strings.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(String.format("Next element exist? - %s.", iterator.next()));
-            //System.out.println("");
         }
     }
 }
