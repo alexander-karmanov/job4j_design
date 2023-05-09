@@ -10,9 +10,11 @@ public class Analysis {
             while (reader.ready()) {
                 String status = reader.readLine();
                 if ((flag) == (status.startsWith("400") || status.startsWith("500"))) {
-                    writer.append(status.split(" ")[1]).append(";").append("\n");
-                    flag = false;
-
+                    writer.append(status.split(" ")[1]).append(";");
+                    flag = !flag;
+                }
+                if ((!flag) == (!status.startsWith("400") || !status.startsWith("500"))) {
+                    writer.append(System.lineSeparator());
                 }
             }
         } catch (IOException e) {
