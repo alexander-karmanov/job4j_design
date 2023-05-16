@@ -9,9 +9,6 @@ public class DuplicatesFinder {
     public static void main(String[] args) throws IOException {
         DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
         Files.walkFileTree(Path.of("D:\\java_test"), duplicatesVisitor);
-        Set set = duplicatesVisitor.getDuplicates().entrySet();
-        for (Object s : set) {
-            System.out.println(s);
-        }
+        duplicatesVisitor.getDuplicates().forEach(System.out::println);
     }
 }
