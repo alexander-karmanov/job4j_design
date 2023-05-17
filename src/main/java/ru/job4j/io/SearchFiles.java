@@ -59,7 +59,7 @@ public class SearchFiles implements FileVisitor<Path> {
             }
         }
         if (!files.contains(ext)) {
-            throw new IllegalArgumentException(String.format("No files with extension " + ext));
+            throw new IllegalArgumentException(String.format("No files with extension *" + ext));
         }
 
         if (!start.toFile().exists()) {

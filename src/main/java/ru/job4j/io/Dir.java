@@ -14,10 +14,9 @@ public class Dir {
         if (!file.isDirectory()) {
             throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
         }
+        System.out.printf("size : %s%n", file.getTotalSpace());
         for (File subfile : file.listFiles()) {
-            int x = 0;
-            //System.out.printf("name : %s%n", file.getName());
-            //System.out.printf("size : %s%n", file.length());
+            System.out.println(subfile.getName());
         }
     }
 }
