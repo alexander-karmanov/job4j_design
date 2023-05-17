@@ -13,21 +13,16 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         FileProperty fileProperty = new FileProperty(attrs.size(), file.toFile().getName());
-        if (!base.containsKey(fileProperty)) {
-            base.put(fileProperty, new ArrayList<>());
-        }
+        base.putIfAbsent(fileProperty, new ArrayList<>());
         base.get(fileProperty).add(file);
         return FileVisitResult.CONTINUE;
     }
 
     public List<Path> getDuplicates() {
-
         List<Path> result = new ArrayList<>();
-
-         for (FileProperty key: base.keySet()) {
-            if (base.get(key).size() >= 2) {
-                System.out.println(base.get(key));
-                /* result.add(Path.of(base.get(key).toString())); */
+        for (List<Path> list: base.values()) {
+            if (list.size() > 1) {
+                result.addAll(list);
             }
         }
         return result;
