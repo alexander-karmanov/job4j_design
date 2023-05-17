@@ -4,7 +4,10 @@ import java.io.File;
 
 public class Dir {
     public static void main(String[] args) {
-        File file = new File("c:\\projects");
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Root folder is null. Usage  ROOT_FOLDER.");
+        }
+        File file = new File(args[0]);
         if (!file.exists()) {
             throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
         }
@@ -12,8 +15,9 @@ public class Dir {
             throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
         }
         for (File subfile : file.listFiles()) {
-            System.out.printf("name : %s%n", file.getName());
-            System.out.printf("size : %s%n", file.length());
+            int x = 0;
+            //System.out.printf("name : %s%n", file.getName());
+            //System.out.printf("size : %s%n", file.length());
         }
     }
 }
