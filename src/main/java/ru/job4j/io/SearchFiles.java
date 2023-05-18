@@ -51,24 +51,19 @@ public class SearchFiles implements FileVisitor<Path> {
         return searcher.getPaths();
     }
     public static void validation(Path start, String ext) {
-        File file = new File(String.valueOf(start));
-        List<String> files = new ArrayList<>();
-        for (File subfile : Objects.requireNonNull(file.listFiles())) {
-            if (subfile.getName().endsWith(ext)) {
-                files.add(ext);
-            }
+        if (!ext.startsWith(".") || ext.length() < 2) {
+            throw new IllegalArgumentException(String.format(" Wrong extension: " + ext));
         }
-        if (!files.contains(ext)) {
-            throw new IllegalArgumentException(String.format("No files with extension *" + ext));
-        }
-
         if (!start.toFile().exists()) {
             throw new IllegalArgumentException(String.format("Not exist %s", start.toFile().getAbsoluteFile()));
+        }
+        if (!start.toFile().isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", start.toFile().getAbsoluteFile()));
         }
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length == 0) {
+        if (args.length != 2) {
             throw new IllegalArgumentException("Root folder is null. Usage  ROOT_FOLDER.");
         }
         Path start = Paths.get(args[0]);
