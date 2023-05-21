@@ -18,26 +18,28 @@ public class ArgsName {
             throw new IllegalArgumentException("Arguments not passed to program");
         }
         for (String arg : args) {
+            if (!arg.contains("=")) {
+                throw new IllegalArgumentException("Error: This argument '" + arg + "' does not contain an equal sign");
+            }
             if (!arg.startsWith("-")) {
                 throw new IllegalArgumentException("Error: This argument '" + arg + "' does not start with a '-' character");
             }
             if (arg.startsWith("-=")) {
                 throw new IllegalArgumentException("Error: This argument '" + arg + "' does not contain a key");
             }
-            if (arg.endsWith("=")) {
-                throw new IllegalArgumentException("Error: This argument '" + arg + "' does not contain a value");
-            }
-             if (!arg.contains("=")) {
-                throw new IllegalArgumentException("Error: This argument '" + arg + "' does not contain an equal sign");
+            if (arg.indexOf("=") == arg.length() - 1) {
+                throw new IllegalArgumentException(
+                        String.format("Error: This argument '" + arg + "' does not contain a value"));
             }
         }
     }
     private void parse(String[] args) {
         for (String arg: args) {
             arg = arg.replaceFirst("-", "");
-            String[] split = arg.split("=");
+            String[] split = arg.split("=", 2);
             values.put(split[0], split[1]);
         }
+        System.out.println(values);
     }
 
     public static ArgsName of(String[] args) {
