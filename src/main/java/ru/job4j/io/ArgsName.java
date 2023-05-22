@@ -4,32 +4,32 @@ import java.util.*;
 
 public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
+    private static StringBuilder sb = new StringBuilder();
 
     public String get(String key) {
         if (!values.containsKey(key)) {
-            throw new IllegalArgumentException("This key: '" + key + "' is missing");
+            throw new IllegalArgumentException(sb.append("This key: '").append(key).append("' is missing").toString());
         }
         return values.get(key);
     }
 
     private static void validation(String[] args) {
-
         if (args.length == 0) {
             throw new IllegalArgumentException("Arguments not passed to program");
         }
         for (String arg : args) {
             if (!arg.contains("=")) {
-                throw new IllegalArgumentException("Error: This argument '" + arg + "' does not contain an equal sign");
+                throw new IllegalArgumentException(sb.append("Error: This argument '").append(arg).append("' does not contain an equal sign").toString());
             }
             if (!arg.startsWith("-")) {
-                throw new IllegalArgumentException("Error: This argument '" + arg + "' does not start with a '-' character");
+                throw new IllegalArgumentException(sb.append("Error: This argument '").append(arg).append("' does not start with a '-' character").toString());
             }
             if (arg.startsWith("-=")) {
-                throw new IllegalArgumentException("Error: This argument '" + arg + "' does not contain a key");
+                throw new IllegalArgumentException(sb.append("Error: This argument '").append(arg).append("' does not contain a key").toString());
             }
             if (arg.indexOf("=") == arg.length() - 1) {
                 throw new IllegalArgumentException(
-                        String.format("Error: This argument '" + arg + "' does not contain a value"));
+                        String.format(sb.append("Error: This argument '").append(arg).append("' does not contain a value").toString()));
             }
         }
     }
