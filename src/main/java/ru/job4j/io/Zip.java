@@ -27,7 +27,6 @@ public class Zip {
     }
 
     public static void main(String[] args) {
-
         Zip zip = new Zip();
         zip.packSingleFile(
                 new File("./pom.xml"),
