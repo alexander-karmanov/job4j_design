@@ -34,9 +34,17 @@ public class Zip {
 
     private static void validate(ArgsName argsName) throws IOException {
         Path dir = Path.of(argsName.get("d"));
+        String ext = argsName.get("e");
+        String archive = argsName.get("o");
 
-        if (dir.toString().isEmpty()) {
+        if (!dir.toString().contains("C:\\projects\\job4j_design")) {
             throw new IllegalArgumentException("Wrong directory");
+        }
+        if (!ext.contains(".class")) {
+            throw new IllegalArgumentException("Wrong extension");
+        }
+        if (!archive.contains("project.zip")) {
+            throw new IllegalArgumentException("Wrong archive");
         }
     }
 
