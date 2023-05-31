@@ -37,14 +37,16 @@ public class Zip {
         String ext = argsName.get("e");
         String archive = argsName.get("o");
 
-        if (!dir.toString().contains("C:\\projects\\job4j_design")) {
+        if (!dir.toFile().isDirectory()) {
             throw new IllegalArgumentException("Wrong directory");
         }
-        if (!ext.contains(".class")) {
+
+        if (!ext.startsWith(".") || ext.split("\\.", 2)[1].isEmpty()) {
             throw new IllegalArgumentException("Wrong extension");
         }
-        if (!archive.contains("project.zip")) {
-            throw new IllegalArgumentException("Wrong archive");
+
+        if (!archive.endsWith(".zip") || archive.split("\\.", 2)[0].isEmpty()) {
+            throw new IllegalArgumentException("Wrong archive name");
         }
     }
 
