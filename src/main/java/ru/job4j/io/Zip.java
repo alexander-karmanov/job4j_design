@@ -41,11 +41,11 @@ public class Zip {
             throw new IllegalArgumentException("Wrong directory");
         }
 
-        if (ext.length() <= 1) {
+        if (!ext.startsWith(".") || ext.length() <= 1) {
             throw new IllegalArgumentException("Wrong extension");
         }
 
-        if (archive.length() <= 4) {
+        if (!archive.endsWith(".zip") || archive.length() <= 4) {
             throw new IllegalArgumentException("Wrong archive name");
         }
     }
