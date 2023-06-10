@@ -25,7 +25,7 @@ public class ConsoleChat {
 
     private List<String> textToList() {
         List<String> list = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(botAnswers))) {
             Scanner scanner = new Scanner(reader);
              while (scanner.hasNextLine()) {
                 list.add(scanner.nextLine());
@@ -38,23 +38,23 @@ public class ConsoleChat {
     private List<String> readPhrases() {
         List<String> result = new ArrayList<>();
         List<String> list = textToList();
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(botAnswers))) {
             System.out.println("Введите фразу");
             while (reader.ready()) {
                 Scanner input = new Scanner(System.in);
                 int random = new Random().nextInt(list.size());
                 String phrase = input.nextLine();
-                if (phrase.equals(OUT)) {
+                if (OUT.equals(phrase)) {
                     result.add(OUT);
                     System.out.println("Чат закрыт");
                     break;
                 }
                 boolean stop = true;
-                if (phrase.equals(STOP)) {
+                if (STOP.equals(phrase)) {
                     result.add(STOP);
                     while (stop) {
                         phrase = input.nextLine();
-                        if (phrase.equals(CONTINUE)) {
+                        if (CONTINUE.equals(phrase)) {
                             System.out.println("Продолжаем");
                             stop = false;
                         }
@@ -72,8 +72,7 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-        String save = "data/chat.log";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(save))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             for (String s : log) {
                 writer.write(s + System.lineSeparator());
             }
@@ -83,7 +82,7 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) throws IOException {
-        ConsoleChat cc = new ConsoleChat("data/answers.txt", "");
+        ConsoleChat cc = new ConsoleChat("data/chat.log", "data/answers.txt");
         cc.run();
     }
 }
