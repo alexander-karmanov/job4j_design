@@ -4,66 +4,54 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class CSVReader {
 
     public static void handle(ArgsName argsName) throws Exception {
-
-        Map<String, List<String>> map  = new LinkedHashMap<>();
-        List<String> list = new ArrayList<>();
+        List<String> title = new ArrayList<>();
         String file = (argsName.get("path"));
+        String delimiter = argsName.get("delimiter");
+        String filter = (argsName.get("filter"));
+
+        List<String> filt = new ArrayList<>(Stream.of(filter.split(delimiter)).toList());
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = reader.readLine();
-            String[] input = line.split(System.lineSeparator());
-            String[] title = input[0].split(";");
-
-            for (String s : title) {
-                if (!map.containsKey(s)) {
-                    map.put(s, new ArrayList<>());
-                }
+            var line = reader.readLine();
+            var scanner = new Scanner(new ByteArrayInputStream(line.getBytes()))
+                    .useDelimiter(delimiter);
+            while (scanner.hasNext()) {
+                title.add(scanner.next());
             }
-            while (line != null) {
-                line = reader.readLine();
-                list.add(line);
-            }
-            list.remove(null);
 
-            System.out.println(map);
-            System.out.println(list);
+            /* результат сопоставления первой строки с фильтром */
+            title.retainAll(filt);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void validate(ArgsName argsName) throws IOException {
-        Path path = Path.of(argsName.get("path"));
+    public static void main(String[] args) throws Exception {
+        ArgsName argsName = ArgsName.of(args);
+        Path in = Path.of(argsName.get("path")).toAbsolutePath();
         String delimiter = argsName.get("delimiter");
         Path out = Path.of(argsName.get("out"));
         String filter = (argsName.get("filter"));
 
-        if (!Files.exists(path)) {
+        if (!Files.exists(in)) {
             throw new IllegalArgumentException("Source file not found");
         }
-        if (!delimiter.equals(";")) {
+        if (!delimiter.equals(";") && !delimiter.equals(",")) {
             throw new IllegalArgumentException("Wrong delimiter");
         }
-        if (!Files.exists(out)) {
+        /* if (!Files.exists(out)) {
             throw new IllegalArgumentException("Target file not found");
-        }
+        } */
+
         if (filter.isBlank()) {
             throw new IllegalArgumentException("Filter not set");
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        File file = new File("source.csv");
-        File target = new File("target.csv");
-        ArgsName argsName = ArgsName.of(new String[]{
-                "-path=" + file.getAbsolutePath(), "-delimiter=;",
-                "-out=" + target.getAbsolutePath(), "-filter=name,education"});
-        validate(argsName);
         handle(argsName);
     }
 }
