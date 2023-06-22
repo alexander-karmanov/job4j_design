@@ -4,41 +4,56 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class CSVReader {
 
     public static void handle(ArgsName argsName) throws Exception {
-        List<String> title = new ArrayList<>();
         String file = (argsName.get("path"));
         String delimiter = argsName.get("delimiter");
         String filter = (argsName.get("filter"));
 
-        List<String> filt = new ArrayList<>(Stream.of(filter.split(delimiter)).toList());
-
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             var line = reader.readLine();
-            var scanner = new Scanner(new ByteArrayInputStream(line.getBytes()))
-                    .useDelimiter(delimiter);
-            while (scanner.hasNext()) {
-                title.add(scanner.next());
+            String[] first = line.split(delimiter);
+            String[] filt = filter.split(delimiter);
+            int[] temp = new int[filt.length];
+
+            for (int i = 0; i < filt.length; i++) {
+                for (int j = 0; j < filt.length; j++) {
+                    if (first[i].equals(filt[j])) {
+                        temp[j] = i;
+                        System.out.print(filt[j] + " | ");
+                        break;
+                    }
+                }
             }
+            System.out.print(System.lineSeparator());
 
-            /* результат сопоставления первой строки с фильтром */
-            title.retainAll(filt);
+            while (reader.ready()) {
+                line = reader.readLine();
+                var scanner = new Scanner(new ByteArrayInputStream(line.getBytes()))
+                        .useDelimiter(delimiter);
+                int idx = 0;
 
+                while (scanner.hasNext()) {
+                    for (int i = 0; i < temp.length; i++) {
+                        if (idx == temp[i]) {
+                            System.out.print(scanner.next() + " | ");
+                        }
+                    }
+                    idx++;
+                }
+                System.out.print(System.lineSeparator());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) throws Exception {
-        ArgsName argsName = ArgsName.of(args);
+    private static void validate(ArgsName argsName) {
         Path in = Path.of(argsName.get("path")).toAbsolutePath();
         String delimiter = argsName.get("delimiter");
         Path out = Path.of(argsName.get("out"));
         String filter = (argsName.get("filter"));
-
         if (!Files.exists(in)) {
             throw new IllegalArgumentException("Source file not found");
         }
@@ -48,10 +63,14 @@ public class CSVReader {
         /* if (!Files.exists(out)) {
             throw new IllegalArgumentException("Target file not found");
         } */
-
         if (filter.isBlank()) {
             throw new IllegalArgumentException("Filter not set");
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        ArgsName argsName = ArgsName.of(args);
+        validate(argsName);
         handle(argsName);
     }
 }
