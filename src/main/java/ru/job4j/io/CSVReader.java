@@ -15,10 +15,14 @@ public class CSVReader {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             var line = reader.readLine();
             String[] first = line.split(delimiter);
-            String[] filt = filter.split(delimiter);
+            String[] filt = filter.split(",");
+
+            System.out.println(Arrays.toString(filt));
+            System.out.println(filt.length);
+
             int[] temp = new int[filt.length];
 
-            for (int i = 0; i < filt.length; i++) {
+            for (int i = 0; i < first.length; i++) {
                 for (int j = 0; j < filt.length; j++) {
                     if (first[i].equals(filt[j])) {
                         temp[j] = i;
@@ -27,6 +31,8 @@ public class CSVReader {
                     }
                 }
             }
+
+
             System.out.print(System.lineSeparator());
 
             while (reader.ready()) {
@@ -35,11 +41,13 @@ public class CSVReader {
                         .useDelimiter(delimiter);
                 int idx = 0;
 
+
                 while (scanner.hasNext()) {
-                    for (int i = 0; i < temp.length; i++) {
-                        if (idx == temp[i]) {
+                     for (int i = 0; i < temp.length; i++) {
+                        /* if (idx == temp[i]) { */
                             System.out.print(scanner.next() + " | ");
-                        }
+                         //System.out.print(temp[i]);
+                        /* } */
                     }
                     idx++;
                 }
