@@ -32,7 +32,6 @@ public class CSVReader {
                 }
             }
 
-
             System.out.print(System.lineSeparator());
 
             while (reader.ready()) {
@@ -46,7 +45,6 @@ public class CSVReader {
                      for (int i = 0; i < temp.length; i++) {
                         /* if (idx == temp[i]) { */
                             System.out.print(scanner.next() + " | ");
-                         //System.out.print(temp[i]);
                         /* } */
                     }
                     idx++;
