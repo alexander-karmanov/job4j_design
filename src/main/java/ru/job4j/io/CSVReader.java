@@ -17,22 +17,17 @@ public class CSVReader {
             String[] first = line.split(delimiter);
             String[] filt = filter.split(",");
 
-            System.out.println(Arrays.toString(filt));
-            System.out.println(filt.length);
-
             int[] temp = new int[filt.length];
 
             for (int i = 0; i < first.length; i++) {
                 for (int j = 0; j < filt.length; j++) {
                     if (first[i].equals(filt[j])) {
                         temp[j] = i;
-                        System.out.print(filt[j] + " | ");
                         break;
                     }
                 }
             }
-
-            System.out.print(System.lineSeparator());
+            System.out.println(Arrays.toString(filt));
 
             while (reader.ready()) {
                 line = reader.readLine();
@@ -40,11 +35,10 @@ public class CSVReader {
                         .useDelimiter(delimiter);
                 int idx = 0;
 
-
                 while (scanner.hasNext()) {
                      for (int i = 0; i < temp.length; i++) {
                         /* if (idx == temp[i]) { */
-                            System.out.print(scanner.next() + " | ");
+                            System.out.print(scanner.next());
                         /* } */
                     }
                     idx++;
