@@ -27,19 +27,19 @@ public class CSVReader {
                     }
                 }
             }
-            System.out.println(Arrays.toString(filt));
+
+            /* System.out.println(Arrays.toString(temp)); */
 
             while (reader.ready()) {
                 line = reader.readLine();
-                var scanner = new Scanner(new ByteArrayInputStream(line.getBytes()))
-                        .useDelimiter(delimiter);
+                var scanner = new Scanner(line).useDelimiter(delimiter);
                 int idx = 0;
 
                 while (scanner.hasNext()) {
-                     for (int i = 0; i < temp.length; i++) {
-                        /* if (idx == temp[i]) { */
+                    for (int i = 0; i < temp.length; i++) {
+                         if (idx == temp[i]) {
                             System.out.print(scanner.next());
-                        /* } */
+                         }
                     }
                     idx++;
                 }
