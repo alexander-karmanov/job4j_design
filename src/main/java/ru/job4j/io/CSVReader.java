@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class CSVReader {
-
+    static String[] filt = {};
     public static void handle(ArgsName argsName) throws Exception {
         String file = (argsName.get("path"));
         String delimiter = argsName.get("delimiter");
@@ -28,30 +28,53 @@ public class CSVReader {
                 }
             }
 
-            System.out.println(Arrays.toString(filt));
-
+            StringJoiner sj = new StringJoiner(",");
             while (reader.ready()) {
                 line = reader.readLine();
                 var scanner = new Scanner(line).useDelimiter(delimiter);
                 int idx = 0;
-                StringJoiner sj = new StringJoiner(",");
-
                 while (scanner.hasNext()) {
-                    /* for (int i = 0; i < filt.length; i++) {
-                        //if (i == idx) {
-                            //sj.add(scanner.next());
-                       // }
-                    } */
-                    System.out.print(scanner.next());
+                     String word = scanner.next();
+                     for (int i = 0; i < filt.length; i++) {
+                        if (i == idx) {
+                            sj.add(word);
+                        }
+                    }
                     idx++;
                 }
-                /* System.out.print(sj); */
-                System.out.print(System.lineSeparator());
+                sj.add(System.lineSeparator());
             }
+
+            if (argsName.get("out") != "stdout") {
+                console(filt, sj);
+            } else {
+                toFile(filt, sj, argsName);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static void console(String[] filt, StringJoiner sj) {
+        System.out.println(Arrays.toString(filt));
+        System.out.println(sj);
+    }
+
+    public static void toFile(String[] filt, StringJoiner sj, ArgsName argsName) throws Exception {
+        System.out.println("here write to file");
+        /* File file = Path.of("./target.txt").toFile(); */
+
+        String file = (argsName.get("out"));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+               System.out.println("writing a file");
+               writer.write(Arrays.toString(filt) + System.lineSeparator());
+               writer.write(String.valueOf(sj));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void validate(ArgsName argsName) {
         Path in = Path.of(argsName.get("path")).toAbsolutePath();
         String delimiter = argsName.get("delimiter");
