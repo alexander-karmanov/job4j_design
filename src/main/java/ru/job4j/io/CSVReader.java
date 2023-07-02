@@ -6,7 +6,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class CSVReader {
-    static String[] filt = {};
+    /* static String[] filt = {}; */
+    static StringJoiner joiner = new StringJoiner(";");
     public static void handle(ArgsName argsName) throws Exception {
         String file = (argsName.get("path"));
         String delimiter = argsName.get("delimiter");
@@ -28,14 +29,15 @@ public class CSVReader {
                 }
             }
 
-            StringJoiner sj = new StringJoiner(",");
+            StringJoiner sj = new StringJoiner(";");
+
             while (reader.ready()) {
                 line = reader.readLine();
                 var scanner = new Scanner(line).useDelimiter(delimiter);
                 int idx = 0;
                 while (scanner.hasNext()) {
                      String word = scanner.next();
-                     for (int i = 0; i < filt.length; i++) {
+                     for (int i = 0; i < temp.length; i++) {
                         if (i == idx) {
                             sj.add(word);
                         }
@@ -45,7 +47,7 @@ public class CSVReader {
                 sj.add(System.lineSeparator());
             }
 
-            if (argsName.get("out") != "stdout") {
+            if ("stdout".equals(argsName.get("out"))) {
                 console(filt, sj);
             } else {
                 toFile(filt, sj, argsName);
@@ -57,18 +59,19 @@ public class CSVReader {
     }
 
     public static void console(String[] filt, StringJoiner sj) {
-        System.out.println(Arrays.toString(filt));
+        Arrays.stream(filt).forEach(joiner::add);
+        System.out.println(joiner);
         System.out.println(sj);
     }
 
     public static void toFile(String[] filt, StringJoiner sj, ArgsName argsName) throws Exception {
-        System.out.println("here write to file");
         /* File file = Path.of("./target.txt").toFile(); */
-
+        Arrays.stream(filt).forEach(joiner::add);
         String file = (argsName.get("out"));
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-               System.out.println("writing a file");
-               writer.write(Arrays.toString(filt) + System.lineSeparator());
+               System.out.println("writing to the file");
+               writer.write(joiner.toString() + System.lineSeparator());
                writer.write(String.valueOf(sj));
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,9 +89,9 @@ public class CSVReader {
         if (!delimiter.equals(";") && !delimiter.equals(",")) {
             throw new IllegalArgumentException("Wrong delimiter");
         }
-        /* if (!Files.exists(out)) {
-            throw new IllegalArgumentException("Target file not found");
-        } */
+        if (!argsName.get("out").endsWith(".csv") && !"stdout".equals(argsName.get("out"))) {
+            throw new IllegalArgumentException("Wrong output");
+        }
         if (filter.isBlank()) {
             throw new IllegalArgumentException("Filter not set");
         }
