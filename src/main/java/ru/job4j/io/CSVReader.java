@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class CSVReader {
-    /* static String[] filt = {}; */
     static StringJoiner joiner = new StringJoiner(";");
+    static List<String> list = new ArrayList<>();
     public static void handle(ArgsName argsName) throws Exception {
         String file = (argsName.get("path"));
         String delimiter = argsName.get("delimiter");
@@ -31,6 +31,8 @@ public class CSVReader {
 
             StringJoiner sj = new StringJoiner(";");
 
+            String string = "";
+
             while (reader.ready()) {
                 line = reader.readLine();
                 var scanner = new Scanner(line).useDelimiter(delimiter);
@@ -40,12 +42,15 @@ public class CSVReader {
                      for (int i = 0; i < temp.length; i++) {
                         if (i == idx) {
                             sj.add(word);
+                            string = sj.toString();
+                            list.add(string);
                         }
                     }
                     idx++;
                 }
-                sj.add(System.lineSeparator());
             }
+
+            /* System.out.println(list);  */
 
             if ("stdout".equals(argsName.get("out"))) {
                 console(filt, sj);
