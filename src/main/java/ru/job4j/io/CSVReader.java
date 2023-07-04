@@ -30,27 +30,27 @@ public class CSVReader {
             }
 
             StringJoiner sj = new StringJoiner(";");
-
-            String string = "";
+            StringJoiner sjoiner = new StringJoiner(";");
 
             while (reader.ready()) {
                 line = reader.readLine();
                 var scanner = new Scanner(line).useDelimiter(delimiter);
                 int idx = 0;
+
                 while (scanner.hasNext()) {
                      String word = scanner.next();
                      for (int i = 0; i < temp.length; i++) {
                         if (i == idx) {
                             sj.add(word);
-                            string = sj.toString();
-                            list.add(string);
+                            list.add(sj.toString());
+                            sj = sjoiner;
                         }
                     }
                     idx++;
                 }
             }
 
-            /* System.out.println(list);  */
+            System.out.println("list  =  " + list);
 
             if ("stdout".equals(argsName.get("out"))) {
                 console(filt, sj);
