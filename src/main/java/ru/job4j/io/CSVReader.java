@@ -29,10 +29,8 @@ public class CSVReader {
                 }
             }
 
-            StringJoiner sj = new StringJoiner(";");
-            StringJoiner sjoiner = new StringJoiner(";");
-
             while (reader.ready()) {
+                StringJoiner sj = new StringJoiner(";");
                 line = reader.readLine();
                 var scanner = new Scanner(line).useDelimiter(delimiter);
                 int idx = 0;
@@ -42,20 +40,17 @@ public class CSVReader {
                      for (int i = 0; i < temp.length; i++) {
                         if (i == idx) {
                             sj.add(word);
-                            list.add(sj.toString());
-                            sj = sjoiner;
                         }
                     }
                     idx++;
                 }
+                list.add(sj.toString());
             }
 
-            System.out.println("list  =  " + list);
-
             if ("stdout".equals(argsName.get("out"))) {
-                console(filt, sj);
+                console(filt, list);
             } else {
-                toFile(filt, sj, argsName);
+                toFile(filt, list, argsName);
             }
 
         } catch (IOException e) {
@@ -63,21 +58,24 @@ public class CSVReader {
         }
     }
 
-    public static void console(String[] filt, StringJoiner sj) {
+    public static void console(String[] filt, List<String> list) {
         Arrays.stream(filt).forEach(joiner::add);
         System.out.println(joiner);
-        System.out.println(sj);
+        /* System.out.println("list  =  "); */
+        list.forEach(System.out::println);
     }
 
-    public static void toFile(String[] filt, StringJoiner sj, ArgsName argsName) throws Exception {
+    public static void toFile(String[] filt, List<String> list, ArgsName argsName) throws Exception {
         /* File file = Path.of("./target.txt").toFile(); */
         Arrays.stream(filt).forEach(joiner::add);
         String file = (argsName.get("out"));
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-               System.out.println("writing to the file");
                writer.write(joiner.toString() + System.lineSeparator());
-               writer.write(String.valueOf(sj));
+            for (String el : list) {
+                writer.write(el);
+                writer.write(System.lineSeparator());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
