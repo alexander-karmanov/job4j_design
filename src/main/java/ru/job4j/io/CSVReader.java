@@ -17,7 +17,6 @@ public class CSVReader {
             var line = reader.readLine();
             String[] first = line.split(delimiter);
             String[] filt = filter.split(",");
-
             int[] temp = new int[filt.length];
 
             for (int i = 0; i < first.length; i++) {
@@ -30,7 +29,7 @@ public class CSVReader {
             }
 
             while (reader.ready()) {
-                StringJoiner sj = new StringJoiner(";");
+                StringJoiner sj = new StringJoiner(delimiter);
                 line = reader.readLine();
                 var scanner = new Scanner(line).useDelimiter(delimiter);
                 int idx = 0;
@@ -38,7 +37,7 @@ public class CSVReader {
                 while (scanner.hasNext()) {
                      String word = scanner.next();
                      for (int i = 0; i < temp.length; i++) {
-                        if (i == idx) {
+                        if (temp[i] == idx) {
                             sj.add(word);
                         }
                     }
@@ -61,15 +60,12 @@ public class CSVReader {
     public static void console(String[] filt, List<String> list) {
         Arrays.stream(filt).forEach(joiner::add);
         System.out.println(joiner);
-        /* System.out.println("list  =  "); */
         list.forEach(System.out::println);
     }
 
     public static void toFile(String[] filt, List<String> list, ArgsName argsName) throws Exception {
-        /* File file = Path.of("./target.txt").toFile(); */
         Arrays.stream(filt).forEach(joiner::add);
         String file = (argsName.get("out"));
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                writer.write(joiner.toString() + System.lineSeparator());
             for (String el : list) {
@@ -84,7 +80,6 @@ public class CSVReader {
     private static void validate(ArgsName argsName) {
         Path in = Path.of(argsName.get("path")).toAbsolutePath();
         String delimiter = argsName.get("delimiter");
-        Path out = Path.of(argsName.get("out"));
         String filter = (argsName.get("filter"));
         if (!Files.exists(in)) {
             throw new IllegalArgumentException("Source file not found");
