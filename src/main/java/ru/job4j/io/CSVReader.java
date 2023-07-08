@@ -6,11 +6,14 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class CSVReader {
-    static StringJoiner joiner = new StringJoiner(";");
+    static ArgsName argsName = new ArgsName();
+
+    static String delimiter = argsName.get("delimiter");
+    static StringJoiner joiner = new StringJoiner(delimiter);
     static List<String> list = new ArrayList<>();
     public static void handle(ArgsName argsName) throws Exception {
         String file = (argsName.get("path"));
-        String delimiter = argsName.get("delimiter");
+        /* String delimiter = argsName.get("delimiter"); */
         String filter = (argsName.get("filter"));
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -27,7 +30,9 @@ public class CSVReader {
                     }
                 }
             }
+            System.out.println("temp = " + Arrays.toString(temp));
 
+            int index = 0;
             while (reader.ready()) {
                 StringJoiner sj = new StringJoiner(delimiter);
                 line = reader.readLine();
@@ -43,8 +48,11 @@ public class CSVReader {
                     }
                     idx++;
                 }
-                list.add(sj.toString());
+
+                list.add(index, sj.toString());
+
             }
+
 
             if ("stdout".equals(argsName.get("out"))) {
                 console(filt, list);
