@@ -6,14 +6,13 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class CSVReader {
-    static ArgsName argsName = new ArgsName();
 
-    static String delimiter = argsName.get("delimiter");
-    static StringJoiner joiner = new StringJoiner(delimiter);
-    static List<String> list = new ArrayList<>();
     public static void handle(ArgsName argsName) throws Exception {
+
+        StringJoiner joiner = new StringJoiner(argsName.get("delimiter"));
+        List<String> list = new ArrayList<>();
+        String delimiter = argsName.get("delimiter");
         String file = (argsName.get("path"));
-        /* String delimiter = argsName.get("delimiter"); */
         String filter = (argsName.get("filter"));
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -30,9 +29,9 @@ public class CSVReader {
                     }
                 }
             }
-            System.out.println("temp = " + Arrays.toString(temp));
 
-            int index = 0;
+            String[] array2 = new String[temp.length];
+
             while (reader.ready()) {
                 StringJoiner sj = new StringJoiner(delimiter);
                 line = reader.readLine();
@@ -40,24 +39,29 @@ public class CSVReader {
                 int idx = 0;
 
                 while (scanner.hasNext()) {
-                     String word = scanner.next();
-                     for (int i = 0; i < temp.length; i++) {
-                        if (temp[i] == idx) {
-                            sj.add(word);
-                        }
+                    String word = scanner.next();
+                    String[] array = word.split(delimiter);
+
+                    for (int i = 0; i < array.length; i++) {
+                        for (int j = 0; j < temp.length; j++) {
+                            /* System.out.println("idx = " + idx + ", array[j] = " + array2[i] + ", j = " + j + ", temp[i] = " + temp[i] + ", i = " + i); */
+                            if (temp[j] == idx) {
+                                array2[j] = array[i];
+                                sj.add(array2[j]);
+                            }
+                         }
                     }
                     idx++;
                 }
-
-                list.add(index, sj.toString());
-
+                list.add(sj.toString());
             }
 
+            System.out.println(Arrays.toString(array2));
 
             if ("stdout".equals(argsName.get("out"))) {
-                console(filt, list);
+                console(filt, list, joiner);
             } else {
-                toFile(filt, list, argsName);
+                toFile(filt, list, argsName, joiner);
             }
 
         } catch (IOException e) {
@@ -65,13 +69,13 @@ public class CSVReader {
         }
     }
 
-    public static void console(String[] filt, List<String> list) {
+    public static void console(String[] filt, List<String> list, StringJoiner joiner) {
         Arrays.stream(filt).forEach(joiner::add);
         System.out.println(joiner);
         list.forEach(System.out::println);
     }
 
-    public static void toFile(String[] filt, List<String> list, ArgsName argsName) throws Exception {
+    public static void toFile(String[] filt, List<String> list, ArgsName argsName, StringJoiner joiner) throws Exception {
         Arrays.stream(filt).forEach(joiner::add);
         String file = (argsName.get("out"));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
