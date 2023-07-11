@@ -44,15 +44,14 @@ public class CSVReader {
 
                     for (int i = 0; i < array.length; i++) {
                         for (int j = 0; j < temp.length; j++) {
-                            /* System.out.println("idx = " + idx + ", array[j] = " + array2[i] + ", j = " + j + ", temp[i] = " + temp[i] + ", i = " + i); */
                             if (temp[j] == idx) {
                                 array2[j] = array[i];
-                                sj.add(array2[j]);
                             }
                          }
                     }
                     idx++;
                 }
+                Arrays.stream(array2).forEach(sj::add);
                 list.add(sj.toString());
             }
 
