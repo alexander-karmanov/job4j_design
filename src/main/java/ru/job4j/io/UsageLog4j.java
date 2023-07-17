@@ -16,8 +16,9 @@ public class UsageLog4j {
         float f = 16.11F;
         double d = 32132131321313.65165D;
         boolean bl = true;
+        char ch = '1';
 
-        LOG.debug("Info string: {}, b : {}, i : {}, l : {}, s : {}, f : {}, d : {}, bl : {}",
-                string, b, i, l, s, f, d, bl);
+        LOG.debug("Info string: {}, b : {}, i : {}, l : {}, s : {}, f : {}, d : {}, bl : {}, ch : {}",
+                string, b, i, l, s, f, d, bl, ch);
     }
 }
