@@ -13,4 +13,20 @@ public class Computer {
         this.system = system;
         this.properties = properties;
     }
+
+    public boolean isWorking() {
+        return working;
+    }
+
+    public int getModel() {
+        return model;
+    }
+
+    public OperatingSystem getSystem() {
+        return system;
+    }
+
+    public String[] getProperties() {
+        return properties;
+    }
 }
