@@ -1,5 +1,7 @@
 package ru.job4j.serialization.json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class JSONObj {
         JSONArray jsonProperties = new JSONArray(list);
 
         /* JSONObject напрямую методом put */
-        final ru.job4j.serialization.json.Computer computer = new ru.job4j.serialization.json.Computer(true, 4680, new OperatingSystem("21H1", 19043),
+        final Computer computer = new Computer(true, 4680, new OperatingSystem("21H1", 19043),
                 new String[] {"64-bit", "4 Gb RAM"});
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("working", computer.isWorking());
@@ -28,5 +30,15 @@ public class JSONObj {
         jsonObject.put("properties", computer.getProperties());
 
         System.out.println(jsonObject.toString());
+
+        /*
+        После этой строки добавьте преобразование объекта Computer
+        computer в json-строку и проверьте, что преобразование
+        произошло для всех полей.
+         */
+
+        final Gson gson = new GsonBuilder().create();
+        gson.toJson(computer);
+        System.out.println(gson.toJson(computer));
     }
 }
