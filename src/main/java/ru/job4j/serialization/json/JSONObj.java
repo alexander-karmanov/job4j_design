@@ -40,5 +40,6 @@ public class JSONObj {
         final Gson gson = new GsonBuilder().create();
         gson.toJson(computer);
         System.out.println(gson.toJson(computer));
+        System.out.println(new JSONObject(computer));
     }
 }
