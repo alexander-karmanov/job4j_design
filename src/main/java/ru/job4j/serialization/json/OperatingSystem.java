@@ -9,6 +9,14 @@ public class OperatingSystem {
         this.build = build;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
+    public int getBuild() {
+        return build;
+    }
+
     @Override
     public String toString() {
         return "OperatingSystem{"

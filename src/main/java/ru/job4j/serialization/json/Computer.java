@@ -1,9 +1,8 @@
 package ru.job4j.serialization.json;
 
-
 public class Computer {
     private final boolean working;
-    private final int model;   /*    4680 */
+    private final int model;
     private final OperatingSystem system;
     private final String[] properties;
 

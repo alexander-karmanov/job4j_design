@@ -12,7 +12,7 @@ public class JSONObj {
     public static void main(String[] args) {
 
         /* JSONObject из json-строки строки */
-        JSONObject jsonComputer = new JSONObject("{\"model\":\"4680\"}");
+        JSONObject jsonSystem = new JSONObject("{\"version\":\"21H1\",\"build\":\"19043\"}");
 
         /* JSONArray из ArrayList */
         List<String> list = new ArrayList<>();
@@ -21,15 +21,17 @@ public class JSONObj {
         JSONArray jsonProperties = new JSONArray(list);
 
         /* JSONObject напрямую методом put */
-        final Computer computer = new Computer(true, 4680, new OperatingSystem("21H1", 19043),
+        final Computer computer = new Computer(true, 4680,
+                new OperatingSystem("21H1", 19043),
                 new String[] {"64-bit", "4 Gb RAM"});
         JSONObject jsonObject = new JSONObject();
+
         jsonObject.put("working", computer.isWorking());
         jsonObject.put("model", computer.getModel());
-        jsonObject.put("system", computer.getSystem());
-        jsonObject.put("properties", computer.getProperties());
+        jsonObject.put("system", jsonSystem);
+        jsonObject.put("properties", jsonProperties);
 
-        System.out.println(jsonObject.toString());
+        System.out.println("1. " + jsonObject);
 
         /*
         После этой строки добавьте преобразование объекта Computer
@@ -38,8 +40,8 @@ public class JSONObj {
          */
 
         final Gson gson = new GsonBuilder().create();
-        gson.toJson(computer);
-        System.out.println(gson.toJson(computer));
-        System.out.println(new JSONObject(computer));
+        gson.toJson(jsonObject);
+        System.out.println("2 " + gson.toJson(computer));
+        System.out.println("3 " + new JSONObject(computer));
     }
 }
