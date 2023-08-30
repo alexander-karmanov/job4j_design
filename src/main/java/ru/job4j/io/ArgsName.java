@@ -12,7 +12,6 @@ public class ArgsName {
         }
         return values.get(key);
     }
-
     private static void validation(String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException("Arguments not passed to program");
