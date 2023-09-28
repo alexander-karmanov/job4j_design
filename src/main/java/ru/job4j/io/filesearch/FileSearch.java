@@ -16,49 +16,59 @@ package ru.job4j.io.filesearch;
 */
 
 import ru.job4j.io.ArgsName;
-
+import ru.job4j.io.SearchFiles;
 import java.io.*;
 import java.nio.file.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class FileSearch {
 
-    private static List<Path> result = new ArrayList<>();
     public static void perform(ArgsName argsName)  throws IOException {
-
-        System.out.println("Searching all files according to criteria");
-        /* -d=C: -n=*.?xt -t=mask -o=log.txt  */
 
         String rootDir = argsName.get("d");
         String mask = argsName.get("n");
         String type = argsName.get("t");
         String out = argsName.get("o");
 
-        System.out.println("rootDir = " + rootDir);
-        System.out.println("out = " + out);
-
-         try {
-            Files.walk(Paths.get(rootDir))
-                    .filter(Files::isRegularFile)
-                    .forEach(file -> {
-                        if (file.toFile().isFile() && file.toFile().getPath().contains(".txt")) {
-                            result.add(file);
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (type.equals("name")) {
+            System.out.println("Search using filename");
+            /* -d=C:\\Tools\ -n="README.txt" -t=name -o=log.txt */
+            Predicate<Path> condition = p -> p.toFile().getName().contains(mask);
+            saveResult(rootDir, condition, out);
         }
 
-         try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
+        if (type.equals("regex")) {
+            System.out.println("Search using regular expression");
+            /* -d=C:\\Tools\ -n="(.*)\\.(txt|zip|rar)$" -t=regex -o=log.txt */
+            String regex = mask;
+            Pattern pattern = Pattern.compile(regex);
+            Predicate<Path> condition = p -> p.toFile().getName().matches(pattern.matcher(regex).toString());
+            saveResult(rootDir, condition, out);
+        }
+
+        if (type.equals("mask")) {
+            System.out.println("Search using mask");
+            /* -d=c:  -n=*.?xt -t=mask -o=log.txt */
+            /* Маска - это облегченное регулярное выражение. Надо преобразовать маску
+        в регулярное выражение и произвести поиск по этому регулярному выражению.  */
+        }
+    }
+
+    public static void saveResult(String rootDir, Predicate<Path> condition, String out) throws IOException {
+        List<Path> result = SearchFiles.search(Path.of(rootDir), condition);
+         for (Path el : result) {
+            System.out.println("found file  = " + el);
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
             for (Path el : result) {
                 writer.write(el.toString());
                 writer.write(System.lineSeparator());
             }
         } catch (IOException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
-
     }
 
     public static void main(String[] args) throws Exception {
