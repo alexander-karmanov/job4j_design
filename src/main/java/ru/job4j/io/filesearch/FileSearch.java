@@ -32,31 +32,54 @@ public class FileSearch {
         String type = argsName.get("t");
         String out = argsName.get("o");
 
-        if (type.equals("name")) {
+        if ("name".equals(type)) {
             System.out.println("Search using filename");
             /* -d=C:\\Tools\ -n="README.txt" -t=name -o=log.txt */
             Predicate<Path> condition = p -> p.toFile().getName().contains(mask);
             saveResult(rootDir, condition, out);
         }
 
-        if (type.equals("regex")) {
+        if ("regex".equals(type))  {
             System.out.println("Search using regular expression");
-            /* -d=C:\\Tools\ -n="(.*)\\.(txt|zip|rar)$" -t=regex -o=log.txt */
+            /* -d=C:\\Tools\ -n="\w+.(txt|zip)$" -t=regex -o=log.txt */
             String regex = mask;
             Pattern pattern = Pattern.compile(regex);
-            Predicate<Path> condition = p -> p.toFile().getName().matches(pattern.matcher(regex).toString());
-            saveResult(rootDir, condition, out);
+            Predicate<Path> condition = p -> pattern.matcher(p.toFile().getName()).matches();
+                    saveResult(rootDir, condition, out);
         }
 
-        if (type.equals("mask")) {
+        if ("mask".equals(type))  {
             System.out.println("Search using mask");
-            /* -d=c:  -n=*.?xt -t=mask -o=log.txt */
-            /* Маска - это облегченное регулярное выражение. Надо преобразовать маску
-        в регулярное выражение и произвести поиск по этому регулярному выражению.  */
+            /* -d=C:\\Tools\ -n=*.?xt -t=mask -o=log.txt */
+            String regex = mask.replace(".", "[.]")
+                               .replace("*", ".*")
+                               .replace("?", ".");
+            Pattern pattern = Pattern.compile(regex);
+            Predicate<Path> condition = p -> pattern.matcher(p.toFile().getName()).matches();
+            saveResult(rootDir, condition, out);
         }
     }
 
-    public static void saveResult(String rootDir, Predicate<Path> condition, String out) throws IOException {
+    private static void validate(ArgsName argsName) throws IOException {
+        Path dir = Path.of(argsName.get("d"));
+        String name = argsName.get("n");
+        String type = argsName.get("t");
+        String out = argsName.get("o");
+        if (!dir.toFile().isDirectory()) {
+            throw new IllegalArgumentException("Wrong directory");
+        }
+        if (!name.contains(".") || name.length() < 3) {
+            throw new IllegalArgumentException("Wrong extension");
+        }
+        if (!"name".equals(type) && !"regex".equals(type) && !"mask".equals(type)) {
+            throw new IllegalArgumentException("Wrong type of search");
+        }
+        if (!out.contains(".") || out.length() < 3) {
+            throw new IllegalArgumentException("Wrong out file");
+        }
+    }
+
+    private static void saveResult(String rootDir, Predicate<Path> condition, String out) throws IOException {
         List<Path> result = SearchFiles.search(Path.of(rootDir), condition);
          for (Path el : result) {
             System.out.println("found file  = " + el);
@@ -73,6 +96,7 @@ public class FileSearch {
 
     public static void main(String[] args) throws Exception {
         ArgsName argsName = ArgsName.of(args);
+        validate(argsName);
         perform(argsName);
     }
 }
