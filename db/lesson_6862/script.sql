@@ -53,7 +53,5 @@ insert into teens(name, gender) values ('Arthur', 'male');
 insert into teens(name, gender) values ('Mark', 'male');
 insert into teens(name, gender) values ('Paul', 'male');
 
-select t1.name || ', ' || t2.name as couple, (t2.id * t1.id) as dbl from teens as t1 cross join teens t2 
-where t1.gender <> t2.gender
-group by couple, dbl
-order by dbl asc
+select t1.name || ', ' || t2.name as couple from teens as t1 cross join teens t2 
+where t1.gender > t2.gender
