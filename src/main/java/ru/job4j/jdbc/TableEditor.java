@@ -29,65 +29,53 @@ public class TableEditor implements AutoCloseable {
         }
     }
 
-    public void createTable(String tableName) throws Exception {
+    private void sqlExecute(String sql) throws SQLException, IOException, ClassNotFoundException {
         connection = initConnection();
-         try (Statement statement = connection.createStatement()) {
-            String sql = String.format(
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        }
+    }
+
+    public void createTable(String tableName) throws Exception {
+        String sql = String.format(
                     "CREATE TABLE IF NOT EXISTS " + tableName + "(%s, %s, %s);",
                     "id SERIAL PRIMARY KEY",
                     "name TEXT",
                     "producer VARCHAR(50)"
-            );
-            statement.execute(sql);
-            System.out.println(getTableScheme(tableName));
-        }
+        );
+        sqlExecute(sql);
+        System.out.println(getTableScheme(tableName));
     }
 
     public void dropTable(String tableName) throws Exception {
         System.out.println("drop table method. table = " + tableName);
-        connection = initConnection();
-        try (Statement statement = connection.createStatement()) {
-            String sql = ("DROP TABLE IF EXISTS " + tableName + ";");
-            statement.execute(sql);
-        }
+        String sql = ("DROP TABLE IF EXISTS " + tableName + ";");
+        sqlExecute(sql);
     }
 
     public void addColumn(String tableName, String columnName, String type) throws Exception {
         System.out.println("addColumn method. table = " + tableName);
-        connection = initConnection();
-        try (Statement statement = connection.createStatement()) {
-            String sql = String.format(
-                    "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + ";"
-            );
-            statement.execute(sql);
-            System.out.println(getTableScheme(tableName));
-        }
+        String sql = "ALTER TABLE " + tableName
+                   + " ADD COLUMN " + columnName + " " + type + ";";
+        sqlExecute(sql);
+        System.out.println(getTableScheme(tableName));
     }
 
     public void dropColumn(String tableName, String columnName) throws Exception {
         System.out.println("dropColumn method. table = " + tableName);
-        connection = initConnection();
-        try (Statement statement = connection.createStatement()) {
-            String sql = String.format(
-                    "ALTER TABLE " + tableName + " DROP COLUMN " + columnName + ";"
-            );
-            statement.execute(sql);
-            System.out.println(getTableScheme(tableName));
-        }
+        String sql = "ALTER TABLE " + tableName
+                   + " DROP COLUMN " + columnName + ";";
+        sqlExecute(sql);
+        System.out.println(getTableScheme(tableName));
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
         System.out.println("renameColumn method. table = " + tableName);
-        connection = initConnection();
-        try (Statement statement = connection.createStatement()) {
-            String sql = String.format(
-                    "ALTER TABLE " + tableName + " RENAME COLUMN " + columnName + " TO " + newColumnName + ";"
-            );
-            statement.execute(sql);
-            System.out.println(getTableScheme(tableName));
-        }
+        String sql = "ALTER TABLE " + tableName
+                   + " RENAME COLUMN " + columnName + " TO " + newColumnName + ";";
+        sqlExecute(sql);
+        System.out.println(getTableScheme(tableName));
     }
-
 
     public String getTableScheme(String tableName) throws Exception {
         var rowSeparator = "-".repeat(30).concat(System.lineSeparator());
