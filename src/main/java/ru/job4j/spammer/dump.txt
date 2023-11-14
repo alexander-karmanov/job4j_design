@@ -1,0 +1,3 @@
+Semen Petrov;semen@yandex.ru;
+Ivan Ivanov;iivanov@gmail.com;
+John Smith;johnsmith@gmail.com;
