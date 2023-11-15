@@ -30,7 +30,8 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines()
                     .peek(ImportDB::validation)
-                    .forEach(s -> users.add(new User(s.split(";")[0], s.split(";")[1])));
+                    .map(s -> s.split(";"))
+                    .forEach(str -> users.add(new User(str[0], str[1])));
         }
         return users;
     }
