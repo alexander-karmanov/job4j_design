@@ -38,7 +38,8 @@ public class ITReportTest {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
             sB.append(line);
-            while (line != null) {
+            sB.append(System.lineSeparator());
+            while (reader.ready()) {
                 line = reader.readLine();
                 sB.append(line);
                 sB.append(System.lineSeparator());
