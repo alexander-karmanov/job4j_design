@@ -5,15 +5,17 @@ import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.formatter.ReportDateTimeParser;
 import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.report.HRReport;
+import ru.job4j.ood.srp.report.Report;
 import ru.job4j.ood.srp.store.MemoryStore;
 
+import javax.xml.bind.JAXBException;
 import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HRReportTest {
     @Test
-    public void whenHRReportGenerated() {
+    public void whenHRReportGenerated() throws JAXBException {
         MemoryStore store = new MemoryStore();
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 200);
@@ -21,7 +23,7 @@ public class HRReportTest {
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
         store.add(worker2);
-        HRReport hrReport = new HRReport(store, parser);
+        Report hrReport = new HRReport(store, parser);
         StringBuilder expected = new StringBuilder()
                 .append("Name; Salary;")
                 .append(System.lineSeparator())

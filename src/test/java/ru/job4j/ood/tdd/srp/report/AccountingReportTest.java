@@ -7,21 +7,23 @@ import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.formatter.ReportDateTimeParser;
 import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.report.AccountingReport;
+import ru.job4j.ood.srp.report.Report;
 import ru.job4j.ood.srp.store.MemoryStore;
 
+import javax.xml.bind.JAXBException;
 import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountingReportTest {
     @Test
-    public void whenAccountingReportGenerated() {
+    public void whenAccountingReportGenerated() throws JAXBException {
         MemoryStore store = new MemoryStore();
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 200);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
-        AccountingReport accountingReport = new AccountingReport(store, parser);
+        Report accountingReport = new AccountingReport(store, parser);
         InMemoryCurrencyConverter converter = new InMemoryCurrencyConverter();
         var convertedSalary = converter.convert(Currency.RUB, worker.getSalary(), Currency.EUR);
         StringBuilder expected = new StringBuilder()
