@@ -8,9 +8,7 @@ import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.report.JSONReport;
 import ru.job4j.ood.srp.store.MemoryStore;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,9 +21,15 @@ public class JSONReportTest {
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
         JSONReport jsonReport = new JSONReport(store, parser);
-        List<Employee> list = new ArrayList<>(store.findBy(employee -> true));
-        var gson = new GsonBuilder().setPrettyPrinting().create();
-        String expected = gson.toJson(list);
+        String expected = """
+                [
+                  {
+                    "name": "Ivan",
+                    "hired": "16:04:2024 18:01",
+                    "fired": "16:04:2024 18:01",
+                    "salary": 200.0
+                  }
+                ]""";
         assertThat(jsonReport.generate(employee -> true)).isEqualTo(expected);
     }
 }
