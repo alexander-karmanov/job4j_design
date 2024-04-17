@@ -28,16 +28,16 @@ public class XMLReport implements Report {
         JAXBContext context = JAXBContext.newInstance(Employee.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        String xml = "";
+        StringBuilder xml = new StringBuilder();
         for (Employee employee : store.findBy(filter)) {
             try (StringWriter writer = new StringWriter()) {
                 marshaller.marshal(employee, writer);
-                xml = writer.getBuffer().toString();
-                System.out.println(xml);
+                xml.append(writer);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return xml;
+        System.out.println(xml);
+        return xml.toString();
     }
 }

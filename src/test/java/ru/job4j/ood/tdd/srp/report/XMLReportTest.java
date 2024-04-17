@@ -10,6 +10,7 @@ import ru.job4j.ood.srp.store.MemoryStore;
 
 import javax.xml.bind.JAXBException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,20 +18,27 @@ public class XMLReportTest {
     @Test
     public void whenXMLReportGenerated() throws JAXBException {
         MemoryStore store = new MemoryStore();
-        Calendar now = Calendar.getInstance();
-        Employee worker = new Employee("Ivan", now, now, 200);
+        Employee worker = new Employee("Ivan", new GregorianCalendar(2021, 3 , 10), new GregorianCalendar(2024, 3 , 15), 200);
+        Employee worker2 = new Employee("Nikolay", new GregorianCalendar(2023, 7 , 4), new GregorianCalendar(2024, 2 , 15), 400);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
-        Report xmlReport = new XMLReport(store, parser);
+        store.add(worker2);
+        XMLReport xmlReport = new XMLReport(store, parser);
         String expected = """
                 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <employee>
                     <name>Ivan</name>
-                    <hired>16:04:2024 18:01</hired>
-                    <fired>16:04:2024 18:01</fired>
+                    <hired>10:04:2021 00:00</hired>
+                    <fired>15:04:2024 00:00</fired>
                     <salary>200.0</salary>
                 </employee>
+                <employee>
+                    <name>Nikolay</name>
+                    <hired>04:08:2023 00:00</hired>
+                    <fired>15:03:2024 00:00</fired>
+                    <salary>400.0</salary>
+                </employee>
                 """;
-        assertThat(xmlReport.generate(employee -> true)).isEqualTo(expected.toString());
+        assertThat(xmlReport.generate(employee -> true)).isEqualTo(expected);
     }
 }
