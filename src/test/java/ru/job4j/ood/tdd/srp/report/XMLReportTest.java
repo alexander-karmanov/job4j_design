@@ -23,7 +23,7 @@ public class XMLReportTest {
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
         store.add(worker2);
-        XMLReport xmlReport = new XMLReport(store, parser);
+        Report xmlReport = new XMLReport(store, parser);
         String expected = """
                 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <employees>
