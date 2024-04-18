@@ -26,18 +26,20 @@ public class XMLReportTest {
         XMLReport xmlReport = new XMLReport(store, parser);
         String expected = """
                 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-                <employee>
-                    <name>Ivan</name>
-                    <hired>10:04:2021 00:00</hired>
-                    <fired>15:04:2024 00:00</fired>
-                    <salary>200.0</salary>
-                </employee>
-                <employee>
-                    <name>Nikolay</name>
-                    <hired>04:08:2023 00:00</hired>
-                    <fired>15:03:2024 00:00</fired>
-                    <salary>400.0</salary>
-                </employee>
+                <employees>
+                    <employee>
+                        <name>Ivan</name>
+                        <hired>10:04:2021 00:00</hired>
+                        <fired>15:04:2024 00:00</fired>
+                        <salary>200.0</salary>
+                    </employee>
+                    <employee>
+                        <name>Nikolay</name>
+                        <hired>04:08:2023 00:00</hired>
+                        <fired>15:03:2024 00:00</fired>
+                        <salary>400.0</salary>
+                    </employee>
+                </employees>    
                 """;
         assertThat(xmlReport.generate(employee -> true)).isEqualTo(expected);
     }
