@@ -18,8 +18,8 @@ public class XMLReportTest {
     @Test
     public void whenXMLReportGenerated() throws JAXBException {
         MemoryStore store = new MemoryStore();
-        Employee worker = new Employee("Ivan", new GregorianCalendar(2021, 3 , 10), new GregorianCalendar(2024, 3 , 15), 200);
-        Employee worker2 = new Employee("Nikolay", new GregorianCalendar(2023, 7 , 4), new GregorianCalendar(2024, 2 , 15), 400);
+        Employee worker = new Employee("Ivan", new GregorianCalendar(2021, 3, 10), new GregorianCalendar(2024, 3, 15), 200);
+        Employee worker2 = new Employee("Nikolay", new GregorianCalendar(2023, 7, 4), new GregorianCalendar(2024, 2, 15), 400);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
         store.add(worker2);

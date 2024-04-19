@@ -17,8 +17,8 @@ public class JSONReportTest {
     @Test
     public void whenJSONReportGenerated() {
         MemoryStore store = new MemoryStore();
-        Employee worker = new Employee("Ivan", new GregorianCalendar(2023, 2 , 1), new GregorianCalendar(2024, 3 , 2), 200);
-        Employee worker2 = new Employee("Alexey", new GregorianCalendar(2024, 1 , 7), new GregorianCalendar(2024, 5 , 10), 300);
+        Employee worker = new Employee("Ivan", new GregorianCalendar(2023, 2, 1), new GregorianCalendar(2024, 3, 2), 200);
+        Employee worker2 = new Employee("Alexey", new GregorianCalendar(2024, 1, 7), new GregorianCalendar(2024, 5, 10), 300);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
         store.add(worker2);
