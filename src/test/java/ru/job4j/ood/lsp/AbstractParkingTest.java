@@ -1,6 +1,5 @@
 package ru.job4j.ood.lsp;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ru.job4j.ood.lsp.parking.AbstractParking;
 import ru.job4j.ood.lsp.parking.PassengerCar;
@@ -9,7 +8,6 @@ import static org.assertj.core.api.Assertions.*;
 
 public class AbstractParkingTest {
 
-    @Disabled
     @Test
     public void whenPark2PassengerCarsAnd2TrucksThenNoMoreParking() {
         PassengerCar passCar1 = new PassengerCar();
@@ -25,7 +23,6 @@ public class AbstractParkingTest {
         assertThat(parking.park(passCar3)).isFalse();
     }
 
-    @Disabled
     @Test
     public void whenPlaceFor1PassengerCarThenTruckImpossibleToPark() {
         PassengerCar passCar1 = new PassengerCar();
@@ -35,7 +32,6 @@ public class AbstractParkingTest {
         assertThat(parking.park(truck1)).isFalse();
     }
 
-    @Disabled
     @Test
     public void when2PassengerCarPlacesEmptyThenCanParkOnly1TruckWithSize2() {
         PassengerCar passCar1 = new PassengerCar();
@@ -45,7 +41,6 @@ public class AbstractParkingTest {
         assertThat(parking.park(passCar1)).isFalse();
     }
 
-    @Disabled
     @Test
     public void when2PassengerCarPlacesEmptyThenTruckWithSizeMore2ImpossibleToPark() {
         AbstractParking parking = new AbstractParking(2, 0);
@@ -53,7 +48,6 @@ public class AbstractParkingTest {
         assertThat(parking.park(truck3)).isFalse();
     }
 
-    @Disabled
     @Test
     public void whenOnlyTruckPlacesThenPassengerCarImpossibleToPark() {
         PassengerCar passCar1 = new PassengerCar();
