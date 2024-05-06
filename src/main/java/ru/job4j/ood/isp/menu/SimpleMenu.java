@@ -14,8 +14,13 @@ public class SimpleMenu implements Menu {
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
-        /*  добавьте реализацию*/
-        return null;
+        SimpleMenu simpleMenu = new SimpleMenu();
+        var el = simpleMenu.findItem(itemName);
+        MenuItemInfo rsl = null;
+        if (el.isPresent()) {
+            rsl = new MenuItemInfo(el.get().menuItem, el.get().number);
+        }
+        return Optional.ofNullable(rsl);
     }
 
     @Override
@@ -28,16 +33,13 @@ public class SimpleMenu implements Menu {
         ItemInfo rsl = null;
         DFSIterator dfsIterator = new DFSIterator();
         while (dfsIterator.hasNext()) {
-            if (name.equals(dfsIterator.stack.getFirst().getName())) {
-                rsl = new ItemInfo(
-                        dfsIterator.stack.getFirst(),
-                        dfsIterator.numbers.getFirst()
-                );
+            ItemInfo dfsItemInfo = dfsIterator.next();
+            if (name.equals(dfsItemInfo.menuItem.getName())) {
+                rsl = dfsItemInfo;
                 break;
             }
-            dfsIterator.next();
         }
-        return Optional.of(rsl);
+        return Optional.ofNullable(rsl);
     }
 
     private static class SimpleMenuItem implements MenuItem {
