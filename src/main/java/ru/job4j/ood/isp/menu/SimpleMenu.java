@@ -8,20 +8,17 @@ public class SimpleMenu implements Menu {
 
     @Override
     public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
+        boolean rsl = false;
         var parent = this.findItem(parentName);
         var child = this.findItem(childName);
-
-        if (parentName == null) {
+        if (parent.isPresent() && child.isEmpty()) {
+            parent.get().menuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
+            rsl = true;
+        } else {
             rootElements.add(new SimpleMenuItem(childName, actionDelegate));
+            rsl = true;
         }
-        if (parent.isPresent()) {
-            if (child.isEmpty()) {
-                parent.get().menuItem.getChildren()
-                      .add(new SimpleMenuItem(childName, actionDelegate));
-                rootElements.add(parent.get().menuItem);
-            }
-        }
-        return true;
+        return rsl;
     }
 
     @Override
@@ -36,8 +33,23 @@ public class SimpleMenu implements Menu {
 
     @Override
     public Iterator<MenuItemInfo> iterator() {
-        /*  добавьте реализацию*/
-        return null;
+        return new Iterator<>() {
+            DFSIterator dfsIterator = new DFSIterator();
+
+            @Override
+            public boolean hasNext() {
+                return dfsIterator.hasNext();
+            }
+
+            @Override
+            public MenuItemInfo next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                ItemInfo itemInfo = dfsIterator.next();
+                return new MenuItemInfo(itemInfo.menuItem, itemInfo.number);
+            }
+        };
     }
 
     private Optional<ItemInfo> findItem(String name) {
@@ -45,7 +57,7 @@ public class SimpleMenu implements Menu {
         DFSIterator dfsIterator = new DFSIterator();
         while (dfsIterator.hasNext()) {
             ItemInfo dfsItemInfo = dfsIterator.next();
-            if (name.equals(dfsItemInfo.menuItem.getName())) {
+            if (dfsItemInfo.menuItem.getName().equals(name)) {
                 rsl = dfsItemInfo;
                 break;
             }
