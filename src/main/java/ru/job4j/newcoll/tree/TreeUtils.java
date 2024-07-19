@@ -1,7 +1,8 @@
 package ru.job4j.newcoll.tree;
 
-import ru.job4j.collection.SimpleQueue;
-
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class TreeUtils<T> {
@@ -13,9 +14,18 @@ public class TreeUtils<T> {
      * @throws IllegalArgumentException если root является null
      */
     public int countNode(Node<T> root) {
-        Queue<Node<T>> queue = new SimpleQueue<>();
-        /*TODO реализуйте метод.*/
-        return 0;
+        if (root == null) {
+            throw new IllegalArgumentException();
+        }
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.add(root);
+        int count = 0;
+        while (!queue.isEmpty()) {
+            Node<T> current = queue.poll();
+            count++;
+            queue.addAll(current.getChildren());
+        }
+        return count;
     }
 
     /**
@@ -25,8 +35,17 @@ public class TreeUtils<T> {
      * @throws IllegalArgumentException если root является null
      */
     public Iterable<T> findAll(Node<T> root) {
-        Queue<Node<T>> queue = new SimpleQueue<>();
-        /*TODO реализуйте метод.*/
-        return null;
+        if (root == null) {
+            throw new IllegalArgumentException();
+        }
+        List<T> result = new ArrayList<>();
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            Node<T> current = queue.poll();
+            queue.addAll(current.getChildren());
+            result.add(current.getValue());
+        }
+        return result;
     }
 }
