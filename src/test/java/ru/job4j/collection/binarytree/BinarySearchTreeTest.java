@@ -96,4 +96,38 @@ public class BinarySearchTreeTest {
         assertThat(tree.inPostOrder()).hasSize(7)
                 .containsExactly(1, 3, 2, 5, 7, 6, 4);
     }
+
+    @Test
+    public void whenRemoveNodeWithNoHeirsThenOk() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.put(8);
+        assertThat(tree.remove(8)).isTrue();
+        assertThat(tree.contains(8)).isFalse();
+    }
+
+    @Test
+    public void whenRemoveNodeWithOneHeirThenOk() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.put(20);
+        tree.put(10);
+        tree.put(25);
+        tree.put(30);
+        assertThat(tree.remove(25)).isTrue();
+        assertThat(tree.contains(25)).isFalse();
+        assertThat(tree.contains(30)).isTrue();
+    }
+
+    @Test
+    public void whenRemoveNodeWithTwoHeirsThenOk() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.put(20);
+        tree.put(15);
+        tree.put(25);
+        tree.put(8);
+        tree.put(9);
+        assertThat(tree.remove(15)).isTrue();
+        assertThat(tree.contains(15)).isFalse();
+        assertThat(tree.contains(8)).isTrue();
+        assertThat(tree.contains(9)).isTrue();
+    }
 }
