@@ -130,4 +130,25 @@ public class BinarySearchTreeTest {
         assertThat(tree.contains(8)).isTrue();
         assertThat(tree.contains(9)).isTrue();
     }
+
+    @Test
+    public void whenClearTreeThenOk() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.put(10);
+        tree.put(15);
+        tree.put(8);
+        tree.put(6);
+        tree.put(7);
+        tree.put(14);
+        tree.put(16);
+        tree.clear();
+        assertThat(tree.inSymmetricalOrder().isEmpty()).isTrue();
+    }
+
+    @Test
+    public void whenClearEmptyTreeThenOk() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.clear();
+        assertThat(tree.inSymmetricalOrder().isEmpty()).isTrue();
+    }
 }
