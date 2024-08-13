@@ -12,7 +12,7 @@ public class Event implements Comparable<Event> {
     @Override
     public int compareTo(Event other) {
         if (this.time == other.time) {
-            // Start events come before end events if they are at the same time
+            /* Start events come before end events if they are at the same time */
             return this.isStart ? -1 : 1;
         }
         return Integer.compare(this.time, other.time);
