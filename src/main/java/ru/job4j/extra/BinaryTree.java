@@ -6,21 +6,28 @@ import java.util.List;
 public class BinaryTree {
     TreeNode root;
 
-    // Вставка
+    // Вставка элемента в дерево
     public void insert(Worker worker) {
-        root = insertRec(root, worker);
-    }
-
-    private TreeNode insertRec(TreeNode root, Worker worker) {
+        TreeNode newNode = new TreeNode(worker);
         if (root == null) {
-            return new TreeNode(worker);
+            root = newNode;
+            return;
         }
-        if (worker.id < root.worker.id) {
-            root.left = insertRec(root.left, worker);
-        } else {
-            root.right = insertRec(root.right, worker);
+        TreeNode current = root;
+        TreeNode parent;
+
+        while (true) {
+            parent = current;
+            current = (worker.id < current.worker.id) ? current.left : current.right;
+            if (current == null) {
+                if (worker.id < parent.worker.id) {
+                    parent.left = newNode;
+                } else {
+                    parent.right = newNode;
+                }
+                return;
+            }
         }
-        return root;
     }
 
     // Метод для получения списка начальников
